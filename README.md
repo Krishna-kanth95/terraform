@@ -1,1 +1,1 @@
-This is a rest repo for terraform practice.
+This is a test repo for terraform practice.
