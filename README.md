@@ -1,2 +1,1 @@
-test repo
- sample
+This is a rest repo for terraform practice.
