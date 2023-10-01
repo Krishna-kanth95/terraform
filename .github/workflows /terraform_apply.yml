@@ -1,0 +1,45 @@
+name: Terraform Plan and Apply
+on:
+  pull_request:
+    branches:
+      - '!main'
+
+jobs:
+  terraform-plan:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_subcommand: "init"
+          tf_actions_working_dir: "terraform"
+
+      - name: Terraform Format
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_subcommand: "fmt"
+          tf_actions_working_dir: "terraform"
+
+      - name: Terraform Plan
+        id: plan
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_subcommand: "plan"
+          tf_actions_working_dir: "terraform"
+
+  terraform-apply:
+    needs: terraform-plan
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Terraform Apply
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_subcommand: "apply --auto-approve"
+          tf_actions_working_dir: "terraform"
