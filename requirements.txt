@@ -1,0 +1,3 @@
+requests
+charset_normalizer
+selenium
